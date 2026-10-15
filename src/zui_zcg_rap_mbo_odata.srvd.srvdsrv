@@ -1,0 +1,10 @@
+@EndUserText.label: 'RAP – test OData service'
+define service ZUI_ZCG_RAP_MBO_ODATA {
+  expose ZC_ZCG_RAP_mbo_COMP as Components;
+  expose ZC_ZCG_RAP_MBO_HEAD as DocumentHeaders;
+  expose ZC_ZCG_RAP_MBO_ITEM as DocumentItems;
+  expose /DMO/I_Customer     as Customer;
+  expose I_Currency          as Currenct;
+  expose I_Country           as Country;
+  expose I_UnitOfMeasure     as UOM;
+}

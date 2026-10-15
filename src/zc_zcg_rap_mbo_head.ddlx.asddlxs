@@ -1,0 +1,154 @@
+@Metadata.layer: #CORE
+
+@UI.headerInfo: {
+  typeName: 'Document',
+  typeNamePlural: 'Documents',
+  title: { type: #STANDARD, label: 'Document number',
+           value: 'DocumentNumber' },
+  description: { label: 'Document ID', value: 'Uuid' }
+}
+
+annotate view ZC_ZCG_RAP_MBO_HEAD with
+{
+  @UI.facet: [
+    { id: 'Document', purpose: #STANDARD, type: #COLLECTION,
+      label: 'Header', position: 10 },
+
+    { id: 'General', purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE,
+      parentId: 'Document', label: 'Document identification', position: 10 },
+
+    { id: 'Items', purpose: #STANDARD, type: #LINEITEM_REFERENCE,
+      label: 'Items', position: 20, targetElement: '_Items' },
+
+    { id: 'DateCr', purpose: #STANDARD, type: #FIELDGROUP_REFERENCE,
+      parentId: 'Document', label: 'Created', position: 30,
+      targetQualifier: 'DateCrGroup' },
+
+    { id: 'DateChg', purpose: #STANDARD, type: #FIELDGROUP_REFERENCE,
+      parentId: 'Document', label: 'Changed', position: 40,
+      targetQualifier: 'DateChgGroup' },
+
+    { id: 'Customer', purpose: #STANDARD, type: #FIELDGROUP_REFERENCE,
+      parentId: 'Document', label: 'Customer information', position: 25,
+      targetQualifier: 'CustomerGroup' }
+  ]
+
+  @UI: { identification: [{ position: 10 }],
+        selectionField: [ { position: 10 } ] }
+
+  Uuid;
+
+  @UI: {
+    lineItem: [
+      { position: 20 },
+      {
+        position: 21,
+        type: #FOR_ACTION,
+        dataAction: 'createItems',
+        label: 'Create Items',
+        invocationGrouping: #CHANGE_SET
+      }
+    ],
+    identification: [{ position: 20 }],
+    selectionField: [{ position: 20 }]
+  }
+  DocumentNumber;
+
+  @UI: {
+  lineItem: [{ position: 25,
+               label: 'Description' }],
+  identification: [{ position: 25,
+                     label: 'Description' }]
+  }
+  Description;
+
+  @UI: {
+    lineItem: [{ position: 30 }],
+    selectionField: [{ position: 30 }]
+  }
+  CustomerId;
+
+  @UI: { fieldGroup: [{ qualifier: 'CustomerGroup', position: 40 }] }
+  CustomerTitle;
+
+  @UI: { fieldGroup: [{ qualifier: 'CustomerGroup', position: 45 }] }
+  CustomerFirstName;
+
+  @UI: { fieldGroup: [{ qualifier: 'CustomerGroup', position: 50 }] }
+  CustomerLastName;
+
+  @UI: { fieldGroup: [{ qualifier: 'CustomerGroup', position: 60 }] }
+  CustomerStreet;
+
+  @UI: { fieldGroup: [{ qualifier: 'CustomerGroup', position: 70 }] }
+  CustomerPostalCode;
+
+  @UI: {
+    lineItem: [{ position: 80 }],
+    fieldGroup: [{ qualifier: 'CustomerGroup', position: 80 }]
+  }
+  CustomerCity;
+
+  @UI: {
+    lineItem: [{ position: 90 }],
+    fieldGroup: [{ qualifier: 'CustomerGroup', position: 90 }],
+    selectionField: [{ position: 90 }]
+  }
+  CustomerCountryCode;
+
+  @UI: { fieldGroup: [{ qualifier: 'DateCrGroup', position: 100 }] }
+  CreatedBy;
+
+  @UI: { fieldGroup: [{ qualifier: 'DateCrGroup', position: 110 }] }
+  CreatedAt;
+
+  @UI: {
+    lineItem: [{ position: 120 }],
+    fieldGroup: [{ qualifier: 'DateChgGroup', position: 120 }]
+  }
+  LastChangedBy;
+
+  @UI: {
+    lineItem: [{ position: 130 }],
+    fieldGroup: [{ qualifier: 'DateChgGroup', position: 130 }]
+  }
+  LastChangedAt;
+
+  @UI.hidden: true
+  LocalLastchangedAt;
+
+  @UI: {
+  lineItem: [{
+    position: 140,
+    label: 'Total value EUR',
+    criticality: 'TotalCriticality',
+    criticalityRepresentation: #WITH_ICON
+  }],
+  identification: [{
+    position: 140,
+    label: 'Total value EUR',
+    criticality: 'TotalCriticality',
+    criticalityRepresentation: #WITH_ICON
+  }]
+  }
+  TotalValueEUR;
+
+  @UI.hidden: true
+  TotalCriticality;
+
+  @UI.hidden: true
+  CurrencyEUR;
+
+
+  @UI: {
+  lineItem: [{
+    position: 150,
+    label: 'Total value EUR - virtual'
+  }],
+  identification: [{
+    position: 150,
+    label: 'Total value EUR - virtual'
+  }]
+  }
+  TotalValueVirtualEUR;
+}

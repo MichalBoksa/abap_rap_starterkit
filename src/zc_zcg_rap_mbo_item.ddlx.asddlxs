@@ -1,0 +1,57 @@
+@Metadata.layer: #CORE
+
+@UI: {
+  headerInfo: {
+    typeName: 'Document item',
+    typeNamePlural: 'Document items',
+    title: { type: #STANDARD, value: 'ItemNumber' },
+    description: { value: 'Uuid' }
+  }
+}
+
+annotate view ZC_ZCG_RAP_MBO_ITEM with
+{
+  @UI.facet: [
+    { id: 'Item', purpose: #STANDARD, type: #COLLECTION,
+      label: 'Item data', position: 10 },
+
+    { id: 'General', purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE,
+      parentId: 'Item', position: 10 }
+  ]
+
+  @UI: { lineItem: [{ position: 10 }] }
+  ItemNumber;
+
+  @UI: { identification: [{ position: 20, label: 'Component ID' }] }
+  @EndUserText.label: 'Component ID'
+  ComponentId;
+
+  @UI: {
+    lineItem: [{ position: 30 }],
+    identification: [{ position: 30, label: 'Material' }]
+  }
+  @EndUserText.label: 'Material name (number)'
+  MaterialNumber;
+
+  @UI: {
+    lineItem: [{ position: 40 }],
+    identification: [{ position: 40, label: 'Quantity' }]
+  }
+  Quantity;
+
+  @UI: {
+    lineItem: [{ position: 45 }],
+    identification: [{ position: 50, label: 'Value' }]
+  }
+  Value;
+
+  @UI: {
+    lineItem: [{ position: 50 }],
+    identification: [{ position: 45, label: 'Price' }]
+  }
+  @EndUserText.label: 'Unit price'
+  ComponentPrice;
+
+  @UI.hidden: true
+  LocalLastChangedAt;
+}

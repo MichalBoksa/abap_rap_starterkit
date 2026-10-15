@@ -1,0 +1,5 @@
+CLASS zcl_rap_mbo_comp DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zi_zcg_rap_mbo_comp.
+ENDCLASS.
+
+CLASS zcl_rap_mbo_comp IMPLEMENTATION.
+ENDCLASS.

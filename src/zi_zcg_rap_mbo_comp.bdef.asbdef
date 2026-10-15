@@ -1,0 +1,43 @@
+managed implementation in class zcl_rap_mbo_comp unique;
+with draft;
+//strict ( 2 ); //Uncomment this line in order to enable strict mode 2. The strict mode has two variants (strict(1), strict(2)) and is prerequisite to be future proof regarding syntax and to be able to release your BO.
+
+define behavior for ZI_ZCG_RAP_mbo_COMP alias Component
+persistent table zcg_rap_mbo_comp
+draft table zcg_rap_mbo_dcom
+lock master total etag  LocalLastChangedAt
+//authorization master ( instance )
+etag master LocalLastChangedAt
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( numbering : managed, readonly ) Uuid;
+  field ( readonly )
+    CreatedBy,
+    CreatedAt,
+    LastChangedBy,
+    LastChangedAt,
+    LocalLastChangedAt;
+
+    field ( mandatory )
+    UnitOfMeasure,
+    CurrencyCode;
+
+    determination setMatnr on save { create; }
+
+    mapping for zcg_rap_mbo_comp
+    {
+        Uuid               = uuid;
+        Matnr              = matnr;
+        Maktx              = maktx;
+        Price              = price;
+        CurrencyCode       = currency_code;
+        UnitOfMeasure      = unit_of_measure;
+        CreatedBy          = created_by;
+        CreatedAt          = created_at;
+        LastChangedBy      = last_changed_by;
+        LastChangedAt      = last_changed_at;
+        LocalLastChangedAt = local_lastchanged_at;
+    }
+}

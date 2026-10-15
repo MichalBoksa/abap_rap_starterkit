@@ -1,0 +1,43 @@
+projection implementation in class zbp_c_zcg_rap_mbo_head unique;
+strict ( 2 );
+use draft;
+use side effects;
+
+define behavior for ZC_ZCG_RAP_MBO_HEAD alias DocumentHeader
+use etag
+{
+  use create ( augment );
+  use update ( augment );
+  use delete;
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Prepare;
+  use action Resume;
+  use action createItems;
+
+  use association _Items { create; with draft; }
+  use association _Text { create; with draft; }
+
+  field ( modify ) Description;
+}
+
+
+define behavior for ZC_ZCG_RAP_MBO_ITEM alias DocumentItem
+use etag
+{
+  use update;
+  use delete;
+
+  use association _Header { with draft; }
+}
+
+define behavior for ZC_ZCG_RAP_MBO_HEAD_TEX
+alias DocumentText
+use etag
+{
+  use update;
+  use delete;
+
+  use association _Header { with draft; }
+}

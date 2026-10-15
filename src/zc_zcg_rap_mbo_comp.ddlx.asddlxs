@@ -1,0 +1,91 @@
+@Metadata.layer: #CORE
+
+@UI.headerInfo: {
+  typeName: 'Component',
+  typeNamePlural: 'Components',
+  title: { value: 'Matnr' },
+  description: { value: 'Maktx' }
+}
+
+@UI.presentationVariant: [{
+  sortOrder: [{ by: 'Matnr', direction: #DESC }],
+  visualizations: [{ type: #AS_LINEITEM }]
+}]
+
+annotate view ZC_ZCG_RAP_mbo_COMP with
+{
+  @UI.facet: [
+    { id: 'Component', purpose: #STANDARD, type: #COLLECTION,
+      label: 'Component information', position: 10 },
+
+    { id: 'General', purpose: #STANDARD, type: #IDENTIFICATION_REFERENCE,
+      parentId: 'Component', position: 10 },
+
+    { id: 'Price', purpose: #STANDARD, type: #FIELDGROUP_REFERENCE,
+      parentId: 'Component', label: 'Price & unit', position: 20,
+      targetQualifier: 'PriceGroup' },
+
+    { id: 'DateCr', purpose: #STANDARD, type: #FIELDGROUP_REFERENCE,
+      parentId: 'Component', label: 'Created', position: 30,
+      targetQualifier: 'DateCrGroup' },
+
+    { id: 'DateChg', purpose: #STANDARD, type: #FIELDGROUP_REFERENCE,
+      parentId: 'Component', label: 'Changed', position: 40,
+      targetQualifier: 'DateChgGroup' }
+  ]
+
+  @UI: { identification: [{ position: 10, label: 'Component ID' }] }
+  Uuid;
+
+  @UI: {
+    lineItem: [{ position: 20, label: 'Component name & number' }],
+    identification: [{ position: 20, label: 'Component (number)' }],
+    selectionField: [{ position: 20 }]
+  }
+  Matnr;
+
+  @UI: { identification: [{ position: 25, label: 'Component name' }] }
+  Maktx;
+
+  @UI: {
+    lineItem: [{ position: 30 }],
+    selectionField: [{ position: 30 }],
+    fieldGroup: [{ qualifier: 'PriceGroup', position: 10 }]
+  }
+  Price;
+
+  @UI: {
+    lineItem: [{ position: 40 }],
+    selectionField: [{ position: 40 }],
+    fieldGroup: [{ qualifier: 'PriceGroup', position: 20 }]
+  }
+  CurrencyCode;
+
+  @UI: {
+    lineItem: [{ position: 50 }],
+    fieldGroup: [{ qualifier: 'PriceGroup', position: 30 }]
+  }
+  UnitOfMeasure;
+
+  @UI: { fieldGroup: [{ qualifier: 'DateCrGroup', position: 10 }] }
+  CreatedBy;
+
+  @UI: { fieldGroup: [{ qualifier: 'DateCrGroup', position: 20 }] }
+  CreatedAt;
+
+  @UI: {
+    lineItem: [{ position: 60 }],
+    fieldGroup: [{ qualifier: 'DateChgGroup', position: 10 }]
+  }
+  LastChangedBy;
+
+  @UI: {
+    lineItem: [{ position: 70 }],
+    fieldGroup: [{ qualifier: 'DateChgGroup', position: 20 }]
+  }
+  LastChangedAt;
+
+  @UI.hidden: true
+  LocalLastchangedAt;
+  
+}

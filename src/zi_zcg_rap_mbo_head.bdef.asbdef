@@ -1,0 +1,174 @@
+managed implementation in class zcl_rap_mbo_head unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZI_ZCG_RAP_mbo_HEAD alias DocumentHeader
+persistent table zcg_rap_mbo_head
+draft table zcg_rap_mbo_dhea
+lock master total etag LocalLastchangedAt
+authorization master ( none )
+etag master LocalLastChangedAt
+{
+  create;
+  update;
+  delete;
+  field ( readonly, numbering : managed ) Uuid;
+  association _Items { create; with draft; }
+  association _Text { create; with draft; }
+
+  field ( readonly )
+  DocumentNumber,
+  CreatedBy,
+  CreatedAt,
+  LastChangedBy,
+  LastChangedAt,
+  LocalLastChangedAt,
+  CurrencyEUR,
+  TotalValueEUR,
+  TotalCriticality;
+
+  field ( mandatory )
+  CustomerId;
+
+  validation validateCustomerId on save
+  {
+    create;
+    field CustomerId;
+  }
+
+  determination determineDocumentNumber on save
+  {
+    create;
+  }
+
+
+  action createItems
+    parameter ZA_ZCG_RAP_MBO_CREATE_ITEM
+    result [1] $self;
+
+
+  draft action ( features : instance ) Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+
+
+  draft determine action Prepare
+  {
+    validation validateCustomerId;
+    validation DocumentItem~validateQuantity;
+    validation DocumentItem~validateComponentId;
+  }
+
+
+  mapping for zcg_rap_mbo_head
+    {
+      Uuid               = uuid;
+      DocumentNumber     = document_number;
+      CustomerId         = customer_id;
+      CreatedBy          = created_by;
+      CreatedAt          = created_at;
+      LastChangedBy      = last_changed_by;
+      LastChangedAt      = last_changed_at;
+      LocalLastChangedAt = local_lastchanged_at;
+    }
+
+}
+
+define behavior for ZI_ZCG_RAP_mbo_ITEM alias DocumentItem
+persistent table zcg_rap_mbo_item
+draft table zcg_rap_mbo_dite
+lock dependent by _Header
+authorization dependent by _Header
+etag master LocalLastChangedAt
+{
+  update;
+  delete;
+  field ( readonly, numbering : managed ) Uuid;
+
+  field ( readonly )
+  HeaderId,
+  ItemNumber,
+  Value,
+  CreatedBy,
+  CreatedAt,
+  LastChangedBy,
+  LastChangedAt,
+  LocalLastChangedAt;
+
+
+  determination calculateItemValue on modify
+  {
+    create;
+    field ComponentId, Quantity;
+  }
+
+
+
+
+
+  validation validateComponentId on save
+  {
+    create;
+    field ComponentId;
+  }
+
+  validation validateQuantity on save
+  {
+    create;
+    field Quantity;
+  }
+
+
+  //side effects
+  side effects
+  {
+    field ComponentId affects field Value;
+    field Quantity affects field Value;
+  }
+
+  mapping for zcg_rap_mbo_item
+    {
+      Uuid               = uuid;
+      HeaderId           = header_id;
+      ItemNumber         = item_number;
+      ComponentId        = component_id;
+      Quantity           = quantity;
+      Value              = value;
+      CreatedBy          = created_by;
+      CreatedAt          = created_at;
+      LastChangedBy      = last_changed_by;
+      LastChangedAt      = last_changed_at;
+      LocalLastChangedAt = local_lastchanged_at;
+    }
+  association _Header { with draft; }
+}
+
+
+define behavior for ZI_ZCG_RAP_MBO_HEAD_TEXT alias DocumentText
+persistent table zcg_rap_mbo_htex
+draft table zcg_rap_mbo_dhtx
+
+lock dependent by _Header
+authorization dependent by _Header
+etag dependent by _Header
+
+{
+  update;
+  delete;
+
+  field ( readonly ) HeaderId;
+  field ( readonly : update ) Language;
+
+
+  mapping for zcg_rap_mbo_htex
+    {
+      HeaderId    = header_id;
+      Language    = language;
+      Description = description;
+    }
+
+  association _Header { with draft; }
+
+
+}
